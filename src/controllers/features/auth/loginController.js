@@ -1,6 +1,6 @@
 import pool from "../../../config/db.js";
 import bcrypt from "bcrypt";
-import generateToken from "../../../utils/generateToken.js";
+import generateToken from "../../../utils/generateJWT.js";
 
 const logIn = async(req, res) => {
     const { username, password, email } = req.body;
