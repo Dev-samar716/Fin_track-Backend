@@ -1,6 +1,7 @@
 import app from './src/app.js';
 import pool from './src/config/db.js';
 import authRouter from './src/routers/authRouter.js';
+import transactionRouter from './src/routers/transactionRouter.js';
 
 // Connecting to DB
 try {
@@ -13,7 +14,8 @@ try {
 
 // API middlewares
 
-app.use("/auth", authRouter)
+app.use("/auth", authRouter);
+app.use("/transactions", transactionRouter)
 
 // Starting the server in port 3000
 app.listen(3000, () => {
