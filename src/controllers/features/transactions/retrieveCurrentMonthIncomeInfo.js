@@ -37,10 +37,15 @@ const retrieveCurrentMonthIncomeInfo = async(req, res) => {
           try {
             const queryToRetrieveIncomeInfo = "SELECT * FROM income WHERE user_id=$1 AND created_at >= $2 AND created_at < $3";
             const currentDate = new Date().toISOString().split('T')[0]; // current date in YYYY-MM-DD format
-            const startOfDay = new Date(currentDate + 'T00:00:00Z').getTime() / 1000;
-            const endOfDay = new Date(currentDate + 'T23:59:59Z').getTime() / 1000;
+            const now = new Date();
+
+            // First day of current month at 00:00:00 UTC
+          const startOfMonth = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1) / 1000;
+           // First day of NEXT month at 00:00:00 UTC 
+          const endOfMonth = Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1) / 1000;
+            
             const incomeInfo = await pool.query(queryToRetrieveIncomeInfo, 
-                [user_id, startOfDay, endOfDay]);
+                [user_id, startOfMonth, endOfMonth]);
 
             res.status(200).json({
                 success: true,
