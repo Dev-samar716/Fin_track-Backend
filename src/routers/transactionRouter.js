@@ -1,6 +1,6 @@
 import express from "express";
-import addIncome from "../controllers/features/transactions/addIncomeController";
-import retrieveCurrentMonthIncomeInfo from "../controllers/features/transactions/retrieveCurrentMonthIncomeInfo";
+import addIncome from "../controllers/features/transactions/addIncomeController.js";
+import retrieveCurrentMonthIncomeInfo from "../controllers/features/transactions/retrieveCurrentMonthIncomeInfo.js";
 
 const transactionRouter = express.Router();
 
