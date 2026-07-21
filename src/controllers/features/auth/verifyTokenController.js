@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
+import pool from '../../../config/db.js';
 
 const verifyToken = async(req, res) => {
-    const token = req.cookies();
+    const token = req.cookies.token;
     let user_id;
 
     if(!token) {
@@ -12,7 +13,7 @@ const verifyToken = async(req, res) => {
     } 
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
         if(!decoded) {
             return res.status(401).json({
@@ -23,7 +24,7 @@ const verifyToken = async(req, res) => {
         user_id = decoded;
     } catch(error) {
         console.log(error); 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Server faced internal errors while trying to verfy token!"
         })

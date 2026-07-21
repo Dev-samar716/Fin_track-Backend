@@ -2,7 +2,7 @@ import pool from "../../../config/db.js";
 import jwt from "jsonwebtoken";
 
 const retrieveCurrentMonthIncomeInfo = async(req, res) => {
-            const token = req.cookies();
+            const token = req.cookies.token;
             let user_id;
     
             // Verifying the user identity
@@ -15,27 +15,28 @@ const retrieveCurrentMonthIncomeInfo = async(req, res) => {
             } 
         
             try {
-                const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        
-                if(!decoded) {
-                    return res.status(401).json({
+                    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+            
+                    if(!decoded) {
+                        return res.status(401).json({
+                            success: false,
+                            message: "Unauthorized access: Invalid token!"
+                        })
+                    }
+                    user_id = decoded;
+                } catch(error) {
+                    console.log(error); 
+                    return res.status(500).json({
                         success: false,
-                        message: "Unauthorized access: Invalid token!"
+                        message: "Server faced internal errors while trying to verfy token!"
                     })
                 }
-                user_id = decoded;
-            } catch(error) {
-                console.log(error); 
-                res.status(500).json({
-                    success: false,
-                    message: "Server faced internal errors while trying to verfy token!"
-                })
-            }
-
         // Retrieving the income information from DB
 
           try {
-            const queryToRetrieveIncomeInfo = "SELECT * FROM income WHERE user_id=$1 AND created_at >= $2 AND created_at < $3";
+            const queryToRetrieveIncomeInfo = `SELECT * FROM income WHERE user_id=$1 AND 
+            created_at >= TO_TIMESTAMP($2) 
+            AND created_at < TO_TIMESTAMP($3)`;
             const currentDate = new Date().toISOString().split('T')[0]; // current date in YYYY-MM-DD format
             const now = new Date();
 
