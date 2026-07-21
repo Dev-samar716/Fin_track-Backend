@@ -1,13 +1,12 @@
 import express from "express";
 import addIncome from "../controllers/features/transactions/addIncomeController.js";
-import retrieveCurrentMonthIncomeInfo from "../controllers/features/transactions/retrieveCurrentMonthIncomeInfo.js";
-import retrievePreviousMonthIncomeInfo from "../controllers/features/transactions/previousMonthIncomeInfo.js";
+import registerUser from "../controllers/features/auth/registerUserController.js";
+import retrieveIncomeInfo from "../controllers/features/transactions/retrieveIncomeInfo.js";
 
 const transactionRouter = express.Router();
 
 // GET API routes for transactions
-transactionRouter.get("/retrieveThisMonthIncome", retrieveCurrentMonthIncomeInfo);
-transactionRouter.get("/retrievePreviousMonthIncome", retrievePreviousMonthIncomeInfo);
+transactionRouter.get("/retrieveIncomeInfo", retrieveIncomeInfo);
 
 // POST API routes for transactions
 transactionRouter.post("/addIncome", addIncome);

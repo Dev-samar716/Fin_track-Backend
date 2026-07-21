@@ -1,7 +1,7 @@
 import pool from "../../../config/db.js";
 import jwt from "jsonwebtoken";
 
-const retrieveCurrentMonthIncomeInfo = async(req, res) => {
+const retrieveIncomeInfo = async(req, res) => {
             const token = req.cookies.token;
             let user_id;
     
@@ -35,18 +35,10 @@ const retrieveCurrentMonthIncomeInfo = async(req, res) => {
 
           try {
             const queryToRetrieveIncomeInfo = `SELECT * FROM income WHERE user_id=$1 AND 
-            created_at >= TO_TIMESTAMP($2) 
-            AND created_at < TO_TIMESTAMP($3)`;
-            const currentDate = new Date().toISOString().split('T')[0]; // current date in YYYY-MM-DD format
-            const now = new Date();
+            created_year = $2`;
+            const current_year = new Date().getFullYear();
 
-            // First day of current month at 00:00:00 UTC
-          const startOfMonth = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1) / 1000;
-           // First day of NEXT month at 00:00:00 UTC 
-          const endOfMonth = Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1) / 1000;
-            
-            const incomeInfo = await pool.query(queryToRetrieveIncomeInfo, 
-                [user_id, startOfMonth, endOfMonth]);
+            const incomeInfo = await pool.query(queryToRetrieveIncomeInfo, [user_id, current_year]);
 
             res.status(200).json({
                 success: true,
@@ -61,4 +53,4 @@ const retrieveCurrentMonthIncomeInfo = async(req, res) => {
           }
      }
 
-export default retrieveCurrentMonthIncomeInfo;
+export default retrieveIncomeInfo;
