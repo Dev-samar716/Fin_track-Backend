@@ -1,4 +1,4 @@
-import pool from "../../../config/db.js";
+import pool from "../../../../config/db.js";
 import jwt from "jsonwebtoken";
 
 const retrieveIncomeInfo = async(req, res) => {

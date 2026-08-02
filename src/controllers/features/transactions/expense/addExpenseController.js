@@ -1,10 +1,10 @@
-import pool from "../../../config/db.js";
+import pool from "../../../../config/db.js";
 import jwt from "jsonwebtoken";
-import mappedMonths from "../../../utils/mappedMonths.js";
+import mappedMonths from "../../../../utils/mappedMonths.js";
 
-const addIncome = async(req, res) => {
+const addExpense = async(req, res) => {
      const token = req.cookies.token;
-     const { income_amount, title, category } = req.body;
+     const { expense_amount, title, category } = req.body;
      const months = mappedMonths();
      let user_id;
 
@@ -35,30 +35,30 @@ const addIncome = async(req, res) => {
                 })
             }
 
-        // Adding the income into DB
+        // Adding the expense into DB
 
         try {
-            const queryToAddIncome = `INSERT INTO income (income_amount, title, category, user_id, created_at, 
+            const queryToAddExpense = `INSERT INTO expense (expense_amount, title, category, user_id, created_at, 
             created_month, created_year, created_day) 
             VALUES ($1, $2, $3, $4, TO_TIMESTAMP($5), $6, $7, $8) RETURNING *`;
             const created_at = Date.now() / 1000; // Converting milliseconds to seconds
             const created_month = months[new Date().getMonth()]; // 0-11
             const created_year = new Date().getFullYear();
             const created_day = new Date().getDate();
-            const addedIncome = await pool.query(queryToAddIncome, 
-                [income_amount, title, category, user_id, created_at, created_month, created_year, created_day]);
+            const addedExpense = await pool.query(queryToAddExpense, 
+                [expense_amount, title, category, user_id, created_at, created_month, created_year, created_day]);
             
             res.status(201).json({
                 success: true,
-                incomeInfo: addedIncome.rows[0]
+                incomeInfo: addedExpense.rows[0]
             })
         } catch(error) {
             console.log(error);
             res.status(500).json({
                 success: false,
-                message: "Server faced internal errors while trying to add income!"
+                message: "Server faced internal errors while trying to add expense!"
             })
         }
 }
 
-export default addIncome;
+export default addExpense;
