@@ -35,7 +35,7 @@ const retrieveExpenseInfo = async(req, res) => {
     // Retrieving the expense information from DB
 
     try {
-        const query = `SELECT * FROM expense WHERE user_id=$1 AND created_year = $2`;
+        const query = `SELECT * FROM expenses WHERE user_id=$1 AND created_year = $2`;
         const expenseInfo = await pool.query(query, [user_id, new Date().getFullYear()]);
 
         res.status(200).json({

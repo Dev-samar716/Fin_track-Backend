@@ -38,7 +38,7 @@ const addExpense = async(req, res) => {
         // Adding the expense into DB
 
         try {
-            const queryToAddExpense = `INSERT INTO expense (expense_amount, title, category, user_id, created_at, 
+            const queryToAddExpense = `INSERT INTO expenses (expense_amount, title, category, user_id, created_at, 
             created_month, created_year, created_day) 
             VALUES ($1, $2, $3, $4, TO_TIMESTAMP($5), $6, $7, $8) RETURNING *`;
             const created_at = Date.now() / 1000; // Converting milliseconds to seconds
@@ -50,7 +50,7 @@ const addExpense = async(req, res) => {
             
             res.status(201).json({
                 success: true,
-                incomeInfo: addedExpense.rows[0]
+                expenseInfo: addedExpense.rows[0]
             })
         } catch(error) {
             console.log(error);

@@ -9,7 +9,7 @@ const transactionRouter = express.Router();
 
 // GET API routes for transactions
 transactionRouter.get("/retrieveIncomeInfo", retrieveIncomeInfo);
-transactionRouter.get("retrieveExpenseInfo", retrieveExpenseInfo)
+transactionRouter.get("/retrieveExpenseInfo", retrieveExpenseInfo)
 
 // POST API routes for transactions
 transactionRouter.post("/addIncome", addIncome);
